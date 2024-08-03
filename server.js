@@ -58,6 +58,14 @@ app.get('/signup', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
 
+app.get('/usuario_padrao', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'usuario_padrao.html'));
+});
+
+app.get('/usuario_ambulante', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'usuario_ambulante.html'));
+});
+
 // Rota de cadastro de usuário
 app.post('/signup', async (req, res) => {
   try {
@@ -94,7 +102,12 @@ app.post('/login', async (req, res) => {
       return res.status(400).send('Senha incorreta');
     }
 
-    res.send(`Bem-vindo, ${user.role}`);
+    // Redirecionar com base na role
+    if (user.role === 'usuario_ambulante') {
+      res.redirect('/usuario_ambulante');
+    } else {
+      res.redirect('/usuario_padrao');
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send('Erro ao fazer login');
