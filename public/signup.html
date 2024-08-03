@@ -12,20 +12,20 @@
   </nav>
   <div class="container">
     <h2>Cadastro</h2>
-    <form action="/login" method="post" class="form">
-      <input type="email" placeholder="Email" required>
-      <input type="email" placeholder="Confirmar Email" required>
-      <input type="password" placeholder="Senha" required>
-      <input type="password" placeholder="Confirmar Senha" required>
+    <form action="/signup" method="post" class="form">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="email" name="confirmEmail" placeholder="Confirmar Email" required>
+      <input type="password" name="password" placeholder="Senha" required>
+      <input type="password" name="confirmPassword" placeholder="Confirmar Senha" required>
       <div class="checkbox-container">
         <label>
-          <input type="checkbox">
+          <input type="checkbox" name="advertiser">
           Sou anunciante
         </label>
       </div>
       <button type="submit">Cadastrar</button>
     </form>
-    <p>Já possui um cadastro? <a href="/login">Faça seu Login</a></p>
+    <p>Já possui uma conta? <a href="/login">Entre por aqui</a></p>
   </div>
 </body>
 </html>
