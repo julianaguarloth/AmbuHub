@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 const { Sequelize, DataTypes } = require('sequelize');
 
 const app = express();
@@ -45,6 +46,32 @@ sequelize.sync();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Configurar middleware de sessão
+app.use(session({
+  secret: 'your-secret-key', // Altere isso para um valor seguro
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Para HTTPS, deve ser true
+}));
+
+// Middleware para proteger rotas
+function ensureAuthenticated(req, res, next) {
+  if (req.session.userId) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+// Middleware para verificar a role do usuário
+function checkUserRole(role) {
+  return function (req, res, next) {
+    if (req.session.userRole === role) {
+      return next();
+    }
+    res.status(403).send('Acesso negado. Você não tem permissão para visualizar esta página.');
+  };
+}
+
 // Rotas
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -58,11 +85,12 @@ app.get('/signup', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
 
-app.get('/usuario_padrao', (req, res) => {
+// Proteger as rotas de usuário com middleware
+app.get('/usuario_padrao', ensureAuthenticated, checkUserRole('usuario_padrão'), (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'usuario_padrao.html'));
 });
 
-app.get('/usuario_ambulante', (req, res) => {
+app.get('/usuario_ambulante', ensureAuthenticated, checkUserRole('usuario_ambulante'), (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'usuario_ambulante.html'));
 });
 
@@ -102,6 +130,10 @@ app.post('/login', async (req, res) => {
       return res.status(400).send('Senha incorreta');
     }
 
+    // Armazenar informações na sessão
+    req.session.userId = user.id;
+    req.session.userRole = user.role;
+
     // Redirecionar com base na role
     if (user.role === 'usuario_ambulante') {
       res.redirect('/usuario_ambulante');
@@ -112,6 +144,16 @@ app.post('/login', async (req, res) => {
     console.error(error);
     res.status(500).send('Erro ao fazer login');
   }
+});
+
+// Rota de logout
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).send('Erro ao fazer logout');
+    }
+    res.redirect('/login');
+  });
 });
 
 app.listen(PORT, () => {
