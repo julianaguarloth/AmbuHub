@@ -2,6 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Aplica a regra de box-sizing a todos os elementos */
 }
 
 nav {
@@ -11,6 +12,13 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed; /* Torna a navbar fixa */
+  width: 100%; /* Faz a navbar ocupar toda a largura da página */
+  top: 0; /* Fixa a navbar no topo da página */
+  left: 0; /* Garante que a navbar inicie no lado esquerdo */
+  right: 0; /* Garante que a navbar estenda até o lado direito */
+  z-index: 1000; /* Garante que a navbar fique acima de outros elementos */
+  box-sizing: border-box; /* Inclui padding na largura total */
 }
 
 nav .logo {
@@ -40,7 +48,10 @@ nav ul li a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  margin-top: 100px; /* Adiciona espaço para a navbar fixa */
+  padding: 1em; /* Adiciona algum espaçamento interno */
+  width: 100%;
+  box-sizing: border-box; /* Inclui padding e border na largura total */
 }
 
 .form {
@@ -50,7 +61,9 @@ nav ul li a {
   width: 300px;
 }
 
-.form input, .form button {
+.form input,
+.form textarea,
+.form button {
   margin: 10px 0;
   padding: 10px;
   width: 100%;
@@ -68,34 +81,41 @@ nav ul li a {
   background-color: #555;
 }
 
-.container p {
-  margin-top: 20px;
-}
-
-.container p a {
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.container p a:hover {
-  text-decoration: underline;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
+.product-list {
   width: 100%;
-  justify-content: center;
+  max-width: 800px;
+  padding: 1em;
+  box-sizing: border-box;
 }
 
-.checkbox-container label {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
+.product {
+  border: 1px solid #ddd;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.checkbox-container input {
-  margin-right: 5px; /* Reduce margin to decrease spacing */
+.product img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
+}
+
+.edit-form {
+  margin-top: 10px;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+h2 {
+  margin-top: 20px; /* Garante espaço entre seções */
+}
+
+button {
+  cursor: pointer;
 }

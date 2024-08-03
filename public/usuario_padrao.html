@@ -15,6 +15,19 @@
   </nav>
   <div class="container">
     <h1>Página de Usuário</h1>
+    <div class="product-list">
+      {{#each products}}
+      <div class="product">
+        <h2>{{this.name}}</h2>
+        <p>{{this.description}}</p>
+        <p>Preço: R$ {{this.price}}</p>
+        <p>Estoque: {{this.stock}}</p>
+        {{#if this.imageUrl}}
+        <img src="{{this.imageUrl}}" alt="{{this.name}}">
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
   </div>
 </body>
 </html>

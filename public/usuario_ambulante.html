@@ -14,7 +14,15 @@
     </ul>
   </nav>
   <div class="container">
-    <h1>Página de Ambulante</h1>
+    <h1>Anuncie aqui</h1>
+    <form action="/create-product" method="post" enctype="multipart/form-data" class="form">
+      <input type="text" name="name" placeholder="Nome do Produto" required>
+      <textarea name="description" placeholder="Descrição" required></textarea>
+      <input type="number" name="price" step="0.01" placeholder="Preço" required>
+      <input type="number" name="stock" placeholder="Quantidade em Estoque" required>
+      <input type="file" name="image">
+      <button type="submit">Cadastrar Produto</button>
+    </form>
   </div>
 </body>
 </html>

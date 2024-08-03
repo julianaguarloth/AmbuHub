@@ -1,0 +1,45 @@
+<h1>Página de Ambulante</h1>
+
+<h2>Cadastrar Novo Produto</h2>
+<form action="/create-product" method="post" enctype="multipart/form-data" class="form">
+  <input type="text" name="name" placeholder="Nome do Produto" required>
+  <textarea name="description" placeholder="Descrição" required></textarea>
+  <input type="number" name="price" step="0.01" placeholder="Preço" required>
+  <input type="number" name="stock" placeholder="Quantidade em Estoque" required>
+  <input type="file" name="image">
+  <button type="submit">Cadastrar Produto</button>
+</form>
+
+<h2>Seus Produtos</h2>
+<div class="product-list">
+  {{#each products}}
+  <div class="product">
+    <h3>{{this.name}}</h3>
+    <p>{{this.description}}</p>
+    <p>Preço: R$ {{this.price}}</p>
+    <p>Estoque: {{this.stock}}</p>
+    {{#if this.imageUrl}}
+    <img src="{{this.imageUrl}}" alt="{{this.name}}" width="150">
+    {{/if}}
+    <form action="/delete-product/{{this.id}}" method="post" style="display:inline;">
+      <button type="submit">Excluir</button>
+    </form>
+    <button onclick="toggleEditForm({{this.id}})">Editar</button>
+    <form action="/edit-product/{{this.id}}" method="post" enctype="multipart/form-data" class="edit-form" id="edit-form-{{this.id}}" style="display:none;">
+      <input type="text" name="name" value="{{this.name}}" required>
+      <textarea name="description" required>{{this.description}}</textarea>
+      <input type="number" name="price" step="0.01" value="{{this.price}}" required>
+      <input type="number" name="stock" value="{{this.stock}}" required>
+      <input type="file" name="image">
+      <button type="submit">Salvar Alterações</button>
+    </form>
+  </div>
+  {{/each}}
+</div>
+
+<script>
+function toggleEditForm(id) {
+  const form = document.getElementById(`edit-form-${id}`);
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+</script>
